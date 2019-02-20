@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
 # @Time   : 2019/2/19 16:30
 # @Author : Ang Hu
@@ -47,16 +47,18 @@ def import_log(fim):
     return result
 
 
-def get_res(pinfo_dict, result):
+def get_res(pinfo_dict, result, resfile_name):
     '''
     输出PV/UV，格式为：
     日期 页面 PV UV
     '''
-
-    for key, value in result.items():
-        print(key[0], pinfo_dict[key[1]], result[key]['pv'], len(result[key]['uv']))
+    with open(resfile_name, 'w', encoding='utf-8') as fout:
+        fout.write('日期       页面 PV UV\n')
+        for key, value in result.items():
+            res = key[0], pinfo_dict[key[1]], result[key]['pv'], len(result[key]['uv'])
+            fout.write(str(res) + '\n')
 
 
 pinfo = import_pageinfo('page_info.txt')
 result = import_log('blog_access.log')
-get_res(pinfo, result)
+get_res(pinfo, result, 'PV&UV.txt')
